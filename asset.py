@@ -1,98 +1,71 @@
 # Author : Pedro Seriang
 # Email  : pedroseriangcorp@gmail.com
 
-import pygame  # Mengimpor modul pygame
+import pygame
 import time
 
-# Inisialisasi pygame
+# Inisialisasi Pygame
 pygame.init()
 
-# Menentukan ukuran layar tampilan
-screen_width = 800
-screen_height = 600
-screen = pygame.display.set_mode((screen_width, screen_height))
+# Ukuran layar dan pengaturan tampilan
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Instagram @Pedro_Seriang')
 
-# Definisi warna yang akan digunakan
-BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
+# Definisi warna
+black = (0, 0, 0)
+white = (255, 255, 255)
 
-# Pengaturan font dan ukuran teks
-font_size = 30
-font = pygame.font.Font(None, font_size)
+# Pengaturan font dan ukuran
+font_size = 25
+font = pygame.font.SysFont('Arial', font_size)
 
-# Daftar lirik yang akan ditampilkan secara bergantian
-lyrics = [
-    "You're just like an angel",
-    "Your skin makes me cry",
-    "You float like a feather",
-    "In a beautiful world",
-    "I wish I was special",
-]
-
-# Membuat clock untuk mengatur frame rate (FPS)
-clock = pygame.time.Clock()
-
-# Fungsi untuk menampilkan teks dengan efek fade in (muncul perlahan) dan fade out (menghilang perlahan)
-def display_text(text, fade_in_duration=1, fade_out_duration=1):
-    # Mulai dengan transparansi alpha 0 (tidak terlihat)
-    alpha = 0
-    # Render teks menjadi surface yang dapat ditampilkan di layar
-    text_surface = font.render(text, True, GREEN)
-    # Mendapatkan posisi teks di tengah layar
-    text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 2))
-
-    # Fade In (Muncul perlahan)
-    for _ in range(fade_in_duration * 60):  # 60 FPS
-        # Memeriksa jika pengguna menekan tombol "QUIT" untuk keluar
+# Fungsi untuk menampilkan teks dengan efek "mengetik"
+def display_text(text, delay=50):
+    screen.fill(black)  # Membersihkan layar dengan warna hitam
+    x, y = 10, 10       # Posisi awal teks
+    for i in range(len(text) + 1):
+        # Menangani event untuk keluar dari program
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                return
+                exit()
+                
+        # Menampilkan teks satu per satu
+        rendered_text = font.render(text[:i], True, white)
+        screen.fill(black)
+        screen.blit(rendered_text, (x, y))
+        pygame.display.flip()
+        pygame.time.delay(delay)
+    
+    # Memberi jeda setelah teks selesai ditampilkan
+    pygame.time.delay(2000)
 
-        # Meningkatkan nilai alpha untuk membuat teks lebih terlihat
-        alpha += 255 / (fade_in_duration * 60)
-        alpha = min(alpha, 255)  # Pastikan alpha tidak melebihi 255
-        text_surface.set_alpha(alpha)  # Set transparansi pada teks
-        screen.fill(BLACK)  # Mengisi layar dengan warna hitam
-        screen.blit(text_surface, text_rect)  # Menampilkan teks di layar
-        pygame.display.flip()  # Memperbarui tampilan layar
-        clock.tick(60)  # Menunggu sesuai FPS
-
-    # Menunggu sejenak agar teks dapat terlihat jelas sebelum menghilang
-    pygame.time.wait(1000)
-
-    # Fade Out (Menghilang perlahan)
-    for _ in range(fade_out_duration * 60):  # 60 FPS
-        # Memeriksa event untuk keluar dari aplikasi
+# Fungsi utama yang menampilkan daftar pesan secara bergantian
+def main():
+    running = True
+    messages = [
+        # Tambahkan kata-kata baru Anda di sini
+        "You're just like an angel",
+        "Your skin makes me cry",
+        "You float like a feather",
+        "In a beautiful world",
+        "I wish I was special",
+    ]
+    
+    # Menampilkan setiap pesan dalam messages dengan efek "mengetik"
+    for message in messages:
+        # Menangani event keluar
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                return
-
-        # Mengurangi nilai alpha untuk membuat teks semakin transparan
-        alpha -= 255 / (fade_out_duration * 60)
-        alpha = max(alpha, 0)  # Pastikan alpha tidak kurang dari 0
-        text_surface.set_alpha(alpha)  # Set transparansi pada teks
-        screen.fill(BLACK)  # Mengisi layar dengan warna hitam
-        screen.blit(text_surface, text_rect)  # Menampilkan teks di layar
-        pygame.display.flip()  # Memperbarui tampilan layar
-        clock.tick(60)  # Menunggu sesuai FPS
-
-# Fungsi utama untuk menampilkan setiap baris lirik dengan efek fade in dan fade out
-def show_lyrics():
-    running = True  # Menandakan program sedang berjalan
-    for line in lyrics:  # Iterasi melalui setiap baris lirik
-        if not running:  # Jika sudah tidak berjalan, keluar dari loop
+                running = False
+        if not running:
             break
-        for event in pygame.event.get():  # Mengecek event "QUIT" di awal setiap lirik
-            if event.type == pygame.QUIT:
-                running = False  # Menghentikan loop jika pengguna keluar
-        
-        # Menampilkan lirik dengan efek fade in dan fade out
-        display_text(line)
+        display_text(message)  # Tampilkan pesan dengan efek mengetik
+    
+    # Menutup Pygame
+    pygame.quit()
 
-    pygame.quit()  # Menutup jendela Pygame setelah loop selesai
-
-# Menjalankan program jika file ini dieksekusi langsung
-if __name__ == "__main__":
-    show_lyrics()
+# Menjalankan fungsi utama jika skrip dijalankan secara langsung
+if __name__ == '__main__':
+    main()
