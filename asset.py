@@ -7,12 +7,12 @@ import time
 # Inisialisasi Pygame
 pygame.init()
 
-# Ukuran layar dan pengaturan tampilan
+# Ubah ukuran layar dan pengaturan tampilan itu disini
 width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Instagram @Pedro_Seriang')
 
-# Definisi warna
+# Untuk definisi warna background dan teks itu disini ubahnya 
 black = (0, 0, 0)
 white = (255, 255, 255)
 
@@ -45,7 +45,7 @@ def display_text(text, delay=50):
 def main():
     running = True
     messages = [
-        # Tambahkan kata-kata baru Anda di sini
+        # Tambahkan kata-kata baru kamu di sini maksud saya lirik lebih tepatnya
         "You're just like an angel",
         "Your skin makes me cry",
         "You float like a feather",
@@ -53,7 +53,7 @@ def main():
         "I wish I was special",
     ]
     
-    # Menampilkan setiap pesan dalam messages dengan efek "mengetik"
+    # Bagian ini fungsinya menampilkan setiap pesan dalam messages dengan efek "mengetik"
     for message in messages:
         # Menangani event keluar
         for event in pygame.event.get():
